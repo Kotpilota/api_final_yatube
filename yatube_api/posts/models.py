@@ -3,11 +3,14 @@ from django.db import models
 
 User = get_user_model()
 
-
 class Group(models.Model):
-    title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=50, unique=True)
-    description = models.TextField()
+    title = models.CharField(
+        max_length=200, verbose_name='Название сообщества'
+    )
+    slug = models.SlugField(
+        max_length=50, unique=True, verbose_name='Слаг'
+    )
+    description = models.TextField(verbose_name='Описание')
 
     class Meta:
         verbose_name = 'Сообщество'
@@ -25,7 +28,8 @@ class Post(models.Model):
         verbose_name='Автор',
     )
     image = models.ImageField(
-        upload_to='posts/', null=True, blank=True, verbose_name='Картинка')
+        upload_to='posts/', null=True, blank=True, verbose_name='Картинка'
+    )
     group = models.ForeignKey(
         Group, on_delete=models.SET_NULL, verbose_name='Сообщество',
         null=True, blank=True, related_name='posts'
