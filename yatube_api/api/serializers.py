@@ -5,12 +5,14 @@ from rest_framework.relations import SlugRelatedField
 
 User = get_user_model()
 
+
 class PostSerializer(serializers.ModelSerializer):
     author = SlugRelatedField(slug_field='username', read_only=True)
 
     class Meta:
         model = Post
         fields = ['id', 'author', 'text', 'pub_date', 'image', 'group']
+
 
 class CommentSerializer(serializers.ModelSerializer):
     author = SlugRelatedField(read_only=True, slug_field='username')
@@ -20,11 +22,13 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ['id', 'author', 'text', 'created', 'post']
         read_only_fields = ['post', 'author', 'created']
 
+
 class GroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Group
         fields = ['id', 'title', 'slug', 'description']
+
 
 class FollowSerializer(serializers.ModelSerializer):
     user = SlugRelatedField(read_only=True, slug_field='username')
