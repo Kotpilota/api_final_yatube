@@ -9,7 +9,6 @@ class Group(models.Model):
     slug = models.SlugField(max_length=50, unique=True)
     description = models.TextField()
 
-
     class Meta:
         verbose_name = 'Сообщество'
         verbose_name_plural = 'Сообщества'
@@ -31,7 +30,6 @@ class Post(models.Model):
         Group, on_delete=models.SET_NULL, verbose_name='Сообщество',
         null=True, blank=True, related_name='posts'
     )
-
 
     class Meta:
         verbose_name = 'Публикация'
@@ -55,7 +53,6 @@ class Comment(models.Model):
     created = models.DateTimeField(
         'Дата добавления', auto_now_add=True, db_index=True)
 
-
     class Meta:
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
@@ -74,11 +71,10 @@ class Follow(models.Model):
         verbose_name='Подписка на'
     )
 
-
     class Meta:
         unique_together = ('user', 'following')
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
 
     def __str__(self):
-        return f"{self.user} подписан на {self.following}"
+        return f'{self.user} подписан на {self.following}'
