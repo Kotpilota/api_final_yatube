@@ -1,6 +1,6 @@
 from rest_framework import viewsets, mixins, filters
 from rest_framework.permissions import (
-    IsAuthenticatedOrReadOnly, IsAuthenticated
+    IsAuthenticatedOrReadOnly, IsAuthenticated, AllowAny,
 )
 from django.shortcuts import get_object_or_404
 
@@ -62,7 +62,7 @@ class GroupViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
 
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]
 
 
 class FollowViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
