@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404
-from posts.models import Comment, Follow, Group, Post
 from rest_framework import filters, mixins, viewsets
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import (
@@ -7,7 +6,8 @@ from rest_framework.permissions import (
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
 )
-from rest_framework.response import Response
+
+from posts.models import Comment, Follow, Group, Post
 
 from .permissions import IsAuthorOrReadOnly
 from .serializers import (
@@ -19,21 +19,14 @@ from .serializers import (
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all().select_related('author')
+    queryset = Post.objects.select_related('author')
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
     pagination_class = LimitOffsetPagination
+    page_size = 10
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-
-    def get_paginated_response(self, data):
-        if not any(
-                param in self.request.query_params
-                for param in ('limit', 'offset')
-        ):
-            return Response(data)
-        return super().get_paginated_response(data)
 
 
 class CommentViewSet(viewsets.ModelViewSet):
